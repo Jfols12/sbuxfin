@@ -74,7 +74,7 @@ st.dataframe(risk_flags.style.format({'Forecast': '${:,.0f}', 'Actual': '${:,.0f
 # --- Industry Benchmarking ---
 st.subheader("🏢 Industry Peer Benchmarking")
 industry_avg_growth = 0.04
-last_actual = actual.loc['2023-01-01':].iloc[-2]
+last_actual = actual.loc['2022-12-31':].iloc[-2]
 last_forecast = forecast_mean.loc['2023-01-01':].iloc[-1]
 starbucks_growth = (last_forecast - last_actual) / last_actual
 
