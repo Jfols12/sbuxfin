@@ -57,6 +57,20 @@ risk_flags = pd.DataFrame({
 })
 risk_flags['Flag'] = risk_flags['Error (%)'].apply(lambda x: '🚨 High Risk' if abs(x) > 5 else '✔️ Normal')
 
+# --- Visualization: Forecast vs Actual ---
+st.subheader("📈 ARIMAX Revenue Forecast vs Actual")
+fig1, ax1 = plt.subplots()
+df['revenue'].plot(ax=ax1, label='Actual Revenue', color='blue')
+forecast_mean.plot(ax=ax1, label='Forecasted Revenue (2023)', color='green')
+ax1.fill_between(forecast_ci.index, forecast_ci.iloc[:, 0], forecast_ci.iloc[:, 1], color='green', alpha=0.3)
+ax1.set_ylabel("Revenue")
+ax1.legend()
+st.pyplot(fig1)
+
+# --- Risk Summary ---
+st.subheader("📊 Forecast Errors & Risk Flags")
+st.dataframe(risk_flags.style.format({'Forecast': '${:,.0f}', 'Actual': '${:,.0f}', 'Error (%)': '{:.2f}%'}))
+
 # --- Industry Benchmarking ---
 st.subheader("🏢 Industry Peer Benchmarking")
 industry_avg_growth = 0.04
@@ -75,20 +89,6 @@ else:
     benchmark_flag = "✅ Starbucks forecast is aligned with industry averages."
 
 st.markdown(f"**{benchmark_flag}**")
-
-# --- Visualization: Forecast vs Actual ---
-st.subheader("📈 ARIMAX Revenue Forecast vs Actual")
-fig1, ax1 = plt.subplots()
-df['revenue'].plot(ax=ax1, label='Actual Revenue', color='blue')
-forecast_mean.plot(ax=ax1, label='Forecasted Revenue (2023)', color='green')
-ax1.fill_between(forecast_ci.index, forecast_ci.iloc[:, 0], forecast_ci.iloc[:, 1], color='green', alpha=0.3)
-ax1.set_ylabel("Revenue")
-ax1.legend()
-st.pyplot(fig1)
-
-# --- Risk Summary ---
-st.subheader("📊 Forecast Errors & Risk Flags")
-st.dataframe(risk_flags.style.format({'Forecast': '${:,.0f}', 'Actual': '${:,.0f}', 'Error (%)': '{:.2f}%'}))
 
 # --- Visualization: % Growth Over Time ---
 st.subheader("📊 % Growth in Revenue, Avg Ticket, and CPI Over Time")
